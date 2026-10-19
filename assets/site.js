@@ -1,6 +1,6 @@
 /* HC Movers v5 — comportamiento de la v3, generalizado para el sitio multipágina */
 (function(){
-  var WA='528183628922', MAIL='admon@hcmovers.com.mx';
+  var WA='528183628922', MAIL='proyectos@hcmovers.com.mx';
   var EN=document.documentElement.lang==='en';
   var $=function(s,c){return (c||document).querySelector(s)}, $$=function(s,c){return [].slice.call((c||document).querySelectorAll(s))};
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches, body=document.body;
@@ -20,25 +20,20 @@
   }
   addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll); onScroll();
 
-  /* Convoy: avanza a la izquierda con el scroll (idéntico a la v3) */
-  var cv=$('#convoy');
-  if(cv){
-    var ab=cv.closest('.about'), road=$('.about .road'), wheels=$$('#convoy .wh'), cvb=$('#cvbody');
-    var convoy=function(){
-      var r=ab.getBoundingClientRect(), p=(innerHeight-r.top)/(innerHeight+r.height); p=Math.max(0,Math.min(1,p));
-      if(reduce)p=.5;
-      var W=road.clientWidth, cw=cv.offsetWidth, x=W*0.35-p*(cw-W*0.2);
-      cv.style.setProperty('--x',x.toFixed(1)+'px');
-      var sc=cw/2350, v=x-(convoy.px==null?x:convoy.px); convoy.px=x;
-      wheels.forEach(function(el){var deg=x/(+el.dataset.r*sc)*57.2958, f=Math.round((((deg%360)+360)%360)/360*48)%48; el.style.backgroundPosition=(f/47*100).toFixed(4)+'% 0'});
-      convoy.vel=Math.min(40,Math.abs(v));
-      road.style.setProperty('--lane',(-p*900).toFixed(1)+'px');
-    };
-    (function shake(){var v=convoy.vel||0;convoy.vel=v*0.9;
-      if(cvb&&!reduce){var t=performance.now()/1000;cvb.style.setProperty('--bob',(Math.sin(t*38)*Math.min(1.2,v/14)).toFixed(2)+'px');
-        wheels.forEach(function(el){el.style.setProperty('--mb',Math.min(1.1,v/30).toFixed(2)+'px')})}
-      requestAnimationFrame(shake)})();
-    addEventListener('scroll',convoy,{passive:true}); addEventListener('resize',convoy); addEventListener('load',convoy); convoy();
+  /* Fila india: avanza sola a la izquierda en bucle; tras el barco vuelve a entrar la camioneta */
+  var fila=$('#fila');
+  if(fila){
+    var trk=$('#filatrk'), road=fila.closest('.road'), fx=0, flast=0, fon=true;
+    var step=function(){var im=trk.firstElementChild;return im.offsetWidth+parseFloat(getComputedStyle(im).marginRight)};
+    var place=function(){trk.style.transform='translate3d('+fx.toFixed(1)+'px,0,0)';road.style.setProperty('--lane',fx.toFixed(1)+'px')};
+    if(reduce){fx=-fila.offsetHeight*0.2;place()}
+    else{
+      fx=road.clientWidth*0.55;
+      if('IntersectionObserver' in window)new IntersectionObserver(function(es){fon=es[0].isIntersecting}).observe(road);
+      (function run(now){var dt=Math.min(0.05,(now-(flast||now))/1000);flast=now;
+        if(fon){var s=step();fx-=fila.offsetHeight*0.5*dt;if(fx<=-s)fx+=s;place()}
+        requestAnimationFrame(run)})(performance.now());
+    }
   }
 
   /* Revelado y contadores */
