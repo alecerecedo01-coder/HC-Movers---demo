@@ -31,7 +31,7 @@
       fx=road.clientWidth*0.55;
       if('IntersectionObserver' in window)new IntersectionObserver(function(es){fon=es[0].isIntersecting}).observe(road);
       (function run(now){var dt=Math.min(0.05,(now-(flast||now))/1000);flast=now;
-        if(fon){var s=step();fx-=fila.offsetHeight*0.5*dt;if(fx<=-s)fx+=s;place()}
+        if(fon){var s=step();fx-=fila.offsetHeight*1.0*dt;if(fx<=-s)fx+=s;place()}
         requestAnimationFrame(run)})(performance.now());
     }
   }
