@@ -685,3 +685,13 @@ a.ind{display:block}
 .hvsnd:hover{transform:scale(1.07)}
 .hvsnd .s-on,.hvsnd.on .s-off{display:none}
 .hvsnd.on .s-on{display:block}
+
+/* AMCHAM debajo de la fila india (Nosotros) */
+.about .amcham{display:flex;align-items:center;gap:28px;margin:clamp(28px,3vw,48px) clamp(24px,4vw,56px) 0;padding-top:28px;border-top:1px solid rgba(0,0,0,.1)}
+.about .amcham img{display:block;width:clamp(150px,13vw,200px);height:auto;flex:none}
+.about .amcham p{font-size:17px;color:#4A4A50;line-height:1.5;max-width:34ch}
+.about .amcham p b{color:#0B0B0C;font-weight:600}
+@media (max-width:600px){ .about .amcham{flex-direction:column;align-items:flex-start;gap:16px;margin-top:20px} .about .amcham img{width:150px} }
+/* AMCHAM: en escritorio bajo la fila india; en celular al final del texto de Quiénes somos */
+.about .amcham.am-m{display:none}
+@media (max-width:960px){ .about .amcham.am-d{display:none} .about .amcham.am-m{display:flex;margin:40px 0 0} }
