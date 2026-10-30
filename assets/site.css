@@ -695,3 +695,5 @@ a.ind{display:block}
 /* AMCHAM: en escritorio bajo la fila india; en celular al final del texto de Quiénes somos */
 .about .amcham.am-m{display:none}
 @media (max-width:960px){ .about .amcham.am-d{display:none} .about .amcham.am-m{display:flex;margin:40px 0 0} }
+/* Etiqueta chica en una tarjeta de industria (Energía: Oil & Gas) */
+.ind .ind-tag{display:inline-block;margin-top:14px;padding:5px 10px;border:1px solid var(--red);color:#fff;font-size:12px;font-weight:600;letter-spacing:.04em;line-height:1}
